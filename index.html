@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nikolai Chupakhin's porfolio</title>
+
+    <meta name="description" content="Nikolai Chupakhin's porfolio">
+
+    <link rel="stylesheet" href="style.css?10" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('.slider-content').map(function() {
+                var _content = $(this),
+                    _buttons = _content.siblings('.slider-buttons'),
+                    _id = _content.attr('data-id') || 0;
+                var slidesSrc = $('.slider-slides-content[data-id="' + _id + '"]' );
+                if (!slidesSrc.length)
+                    slidesSrc = $('.slider-slides-content:not([data-id])');
+                var slides = slidesSrc.clone();
+                slidesSrc.remove();
+                slides.children('span').each(function(i) {
+                    _content.append('<a href="' + ($(this).attr('data-url') ? $(this).attr('data-url') + '" target="_blank' : 'javascript://') + '"><div class="slider-page" style="display:none;background-image:url(' + $(this).attr('data-image') + ')"><span class="slider-page-description"><span class="slider-page-description-inner">' + $(this).html() + '</span></span></div></a>');
+                });
+                _content.find('.slider-page:first').show();
+                var sliderPageCount = _content.find('.slider-page').length;
+                for (var i = 0; i < sliderPageCount; ++i) {
+                    _buttons.append('<span data-id="slider-button-' + i + '" class="slider-button"></span>');
+                }
+                _buttons.find('.slider-button:first').addClass('active');
+                _content.find('.slider-page').each(function(i) {
+                    $(this).attr('data-id', 'slider-page-' + i);
+                });
+                var interval = 5 * 1000;
+                var timer;
+                var currentPageId = 0;
+
+                function sliderAction() {
+                    currentPageId++;
+                    if (currentPageId >= sliderPageCount) {
+                        currentPageId = 0;
+                    }
+                    toggleSlider(currentPageId);
+                    timer = setTimeout(sliderAction, interval);
+                }
+
+                function toggleSlider(pageId) {
+                    if (_content.find('.slider-page[data-id="slider-page-' + pageId + '"]').is(':visible')) {
+                        return;
+                    }
+                    _buttons.find('.slider-button').removeClass('active');
+                    _buttons.find('.slider-button[data-id="slider-button-' + pageId + '"]').addClass('active');
+                    _content.find('.slider-page').fadeOut();
+                    _content.find('.slider-page[data-id="slider-page-' + pageId + '"]').fadeIn();
+                }
+                timer = setTimeout(sliderAction, interval);
+                _buttons.find('.slider-button').click(function() {
+                    var id = +$(this).attr('data-id').split('-')[2];
+                    toggleSlider(id);
+                    currentPageId = id;
+                    clearTimeout(timer);
+                    timer = setTimeout(sliderAction, interval);
+                });
+                _content.hover(function() {
+                    clearTimeout(timer);
+                    timer = setTimeout(sliderAction, interval);
+                }, function() {
+                    clearTimeout(timer);
+                    timer = setTimeout(sliderAction, interval);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header" class="section header">
+        <div class="container">
+            <div class="container-title header-title">
+                <span class="background-lighting">Hi! It's Nikolai Chupakhin.</span>
+            </div>
+            <div class="container-content has-icon description">
+                <img class="icon" src="resources/static/job.png"/>
+                <span class="background-lighting">Java developer</span>
+            </div>
+            <div class="container-content has-icon description">
+                <img class="icon" src="resources/static/education.png" />
+                <span class="background-lighting">Samara university</span>
+            </div>
+            <div class="container-content has-button">
+                <a href="https://t.me/chupaniko" target=_blank id="register" class="button register">Contact with me</a>
+            </div>
+        </div>
+        <div class="section menu">
+            <div class="container">
+                <ul class="item-list">
+                    <li class="item">
+                        <a href="#header"class="background-lighting">Home</a>
+                    </li>
+                    <li class="item">
+                        <a href="#about"class="background-lighting">About</a>
+                    </li>
+                    <li class="item">
+                        <a href="#skills"class="background-lighting">Skills</a>
+                    </li>
+                    <li class="item">
+                        <a href="#portfolio"class="background-lighting">Portfolio</a>
+                    </li>
+                    <li class="item">
+                        <a href="#contacts"class="background-lighting">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div id="about" class="section style0">
+        <div class="container">
+            <div class="container-title">
+                About
+            </div>
+            <div class="container-content">
+                <p>
+                    I am a Java developer with one year experience. Besides business tasks I like solving tasks on Codeforces and LeetCode and participating coding championships. I read business and science fiction books. My hobbies are: track-and-field, snowboarding, kayaking, tracking.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="skills" class="section style1">
+        <div class="container">
+            <div class="container-title">
+                Skills
+            </div>
+            <div class="container-content">
+                <div class="card">
+                    <div class="card-photo">
+                        <span class="photo-image" style="background-image:url(resources/photos/avatar.jpg)"></span>
+                    </div>
+                    <div class="card-info">
+                        <div class="skill-container">
+                            <div class="skill-name"><strong>Profile:</strong></div>
+                            <div class="skill-description">Java developer</div>
+                        </div>
+                        <div class="skill-container">
+                            <div class="skill-name"><strong>Tech stack:</strong></div>
+                            <div class="skill-description">
+                                <ol>
+                                    <li class="spoiler-title" onclick="this.classList.toggle('visible')">Java stack
+                                    </li>
+                                    <div class="spoiler-content">
+                                        <ul>
+                                            <li>
+                                                Java core
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                PostgreSQL
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                Spring Boot
+                                                <progress max="100" value="80">80%</progress>
+                                            </li>
+                                            <li>
+                                                Spring Data JPA
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                Spring Security
+                                                <progress max="100" value="70">70%</progress>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <li class="spoiler-title" onclick="this.classList.toggle('visible')">Additional technologies
+                                    </li>
+                                    <div class="spoiler-content">
+                                        <ul>
+                                            <li>
+                                                Android SDK
+                                                <progress max="100" value="60">60%</progress>
+                                            </li>
+                                            <li>
+                                                ReactJS
+                                                <progress max="100" value="70">70%</progress>
+                                            </li>
+                                            <li>
+                                                JavaFX
+                                                <progress max="100" value="90">90%</progress>
+                                            </li>
+                                            <li>
+                                                TimescaleDB
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-container">
+                            <div class="skill-name"><strong>Tools:</strong></div>
+                            <div class="skill-description">
+                                <ul>
+                                    <li>
+                                                IntelliJ IDEA
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                DBeaver
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                VS Code
+                                                <progress max="100" value="90">90%</progress>
+                                            </li>
+                                            <li>
+                                                Postman
+                                                <progress max="100" value="100">100%</progress>
+                                            </li>
+                                            <li>
+                                                Putty
+                                                <progress max="100" value="60">60%</progress>
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="portfolio" class="section style0">
+        <div class="container">
+            <div class="container-title">
+                Portfolio
+            </div>
+            <div class="container-content">
+                <div class="card">
+                    <div class="card-label">
+                        >5
+                    </div>
+                    <div class="card-info">
+                        <strong>Coding projects</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-label">
+                        >15
+                    </div>
+                    <div class="card-info">
+                        <strong>Technologies and libraries used</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-label">
+                        3
+                    </div>
+                    <div class="card-info">
+                        <strong>years of development</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-label">
+                        >100
+                    </div>
+                    <div class="card-info">
+                        <strong>delighted customers</strong>
+                    </div>
+                </div>
+                <p>
+                    <strong>My projects on GitHub:</strong>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/chupaniko/exchance_server" target="_blank">Exchance platform (server)</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/chupaniko/exchance_client" target="_blank">Exchance platform (client)</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/chupaniko/constructCalc" target="_blank">Construct calculator</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/chupaniko/MyNotepad" target="_blank">AxonNote</a>
+                        </li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="main-slider">
+        <div class="slider-slides-content" style="display:none">
+            <span data-image="resources/slider/1.png"></span><br />
+            <span data-image="resources/slider/2.png"></span><br />
+            <span data-image="resources/slider/3.png"></span><br />
+            <span data-image="resources/slider/4.png"></span><br />
+            <span data-image="resources/slider/5.png"></span><br />
+            <span data-image="resources/slider/6.png"></span><br />
+            <span data-image="resources/slider/7.png"></span><br />
+        </div>
+        <div class="slider-buttons"></div>
+        <div class="slider-content"></div>
+    </div>
+    <div id="contacts" class="section footer">
+        <div class="container">
+            <div class="container-title">
+                Contacts
+            </div>
+            <div class="container-content">
+                <p><strong>E-mail:</strong> <a href="mailto:nikolaicxxi@gmail.com">nikolaicxxi@gmail.com</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+79276871196">+7 (927) 687-11-96</a></p>
+                <p>
+                    <a href="https://t.me/chupaniko" target="_blank"><img class="icon" src="resources/static/telegram.png" /> Nikolai Chupakhin
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
